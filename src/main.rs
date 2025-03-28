@@ -2,13 +2,23 @@
 #[link(name="sandbox", kind="dylib")]
 extern {
     // this is rustified prototype of the function from our C library
-    fn testcall(v: f32);
+    fn characterSetTest();
+    fn listFiles();
+    fn pointersTest();
+    fn fileTest();
+    fn preprocessingTest();
+    fn dataTypeSizeTest();
 }
 
 fn main() {
-    println!("Hello, world from Rust!");
+    println!("Initializing Sandbox_CLang from Rust!");
     // calling the function from foo library
     unsafe {
-        testcall(std::f32::consts::PI);
+        characterSetTest();
+        listFiles();
+        pointersTest();
+        fileTest();
+        preprocessingTest();
+        dataTypeSizeTest();
     };
 }

@@ -114,6 +114,23 @@ int listFiles()
     return 0;
 }
 
+int localTimeCheck()
+{
+	time_t t;
+	struct tm *tmp;
+	char MY_TIME[50];
+	time(&t);
+	//localtime() uses the time pointed by t ,
+	// to fill a tm structure with the
+	// values that represent the
+	// corresponding local time.
+	tmp = localtime(&t);
+	// using strftime to display time
+	strftime(MY_TIME, sizeof(MY_TIME), "%x - %I:%M%p", tmp);
+	printf("Formatted date & time : %s\n", MY_TIME);
+	return 0;
+}
+
 int testingPointers(int *p, void *ptr, int(funcPtr)())
 {
     //Dynamic structure initialization
@@ -153,7 +170,8 @@ int pointersTest()
 	printf("The address of j is %p\n", &j);
 	printf("The value of j is %d\n", j);
     printf("address of function pointersTest is :%p\n", pointersTest);
-	//testingPointers(&j, &x, func);
+    int(*fptr)() = timerFunction(localTimeCheck);
+	testingPointers(&j, &x, fptr);
     return 0;
 }
 
@@ -198,11 +216,11 @@ int preprocessingTest()
 	printf("%s\n", __func__);//print the name of the function
 	printf("Minimum of 20 and 30 = %d\n", MIN(20, 30));
 	printf("Maximum of 20 and 30 = %d\n", MAX(20, 30));
-	printf(MKSTR(HELLO C++));
+	printf(MKSTR(HELLO C));
 	printf("\nValue of __LINE__ : %d\n", __LINE__);
 	printf("Value of __FILE__ : %s\n", __FILE__);
-	printf("\nValue of __DATE__ : %s\n", __DATE__);
-	printf("\nValue of __TIME__ : %s\n", __TIME__);
+	printf("Value of __DATE__ : %s\n", __DATE__);
+	printf("Value of __TIME__ : %s\n", __TIME__);
 	printf("Multiplication = %d\n", MULTIPLY(20, 30));
 	//printf(merge("Hello ", "World\n"));
 	printf("%s\n", get(GeeksQuiz));
@@ -242,23 +260,6 @@ void timerFunction(int(func)())
     printf("function %s took %f seconds to execute \n", __FUNCTION__, time_taken);
 }
 
-int localTimeCheck()
-{
-	time_t t;
-	struct tm *tmp;
-	char MY_TIME[50];
-	time(&t);
-	//localtime() uses the time pointed by t ,
-	// to fill a tm structure with the
-	// values that represent the
-	// corresponding local time.
-	tmp = localtime(&t);
-	// using strftime to display time
-	strftime(MY_TIME, sizeof(MY_TIME), "%x - %I:%M%p", tmp);
-	printf("Formatted date & time : %s\n", MY_TIME);
-	return 0;
-}
-
 int argumentsTest(int args,...)
 {
     va_list ap;
@@ -269,9 +270,4 @@ int argumentsTest(int args,...)
         printf("Arguments Summ: %i\n", va_arg(ap,int));
     va_end(ap);
     return summ;
-}
-
-// https://flames-of-code.netlify.app/blog/rust-and-cmake/
-void testcall(float value) {
-    printf("Hello, world from C! Value passed: %f\n", value);
 }
